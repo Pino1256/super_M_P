@@ -142,8 +142,8 @@ class GameView(arcade.View):
 
         self.cambio_mappa = False
 
-        self.personaggio.center_x = 350
-        self.personaggio.center_y = 50
+        self.personaggio.center_x = 1524
+        self.personaggio.center_y = 1705
 
     def on_draw(self):
         self.clear()
