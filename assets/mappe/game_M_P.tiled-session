@@ -1,0 +1,42 @@
+{
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "home_2.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 4,
+            "viewCenter": {
+                "x": 192.33333333333331,
+                "y": 555.3333333333333
+            }
+        },
+        "map_1.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 6,
+            "viewCenter": {
+                "x": 1079.6666666666665,
+                "y": 330
+            }
+        },
+        "terreno.tsx": {
+            "dynamicWrapping": false
+        }
+    },
+    "last.imagePath": "C:/Users/rupil/super_M_P/assets/font",
+    "map.height": 50,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 16,
+    "map.tileWidth": 16,
+    "map.width": 50,
+    "openFiles": [
+    ],
+    "project": "game_M_P.tiled-project",
+    "recentFiles": [
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}
