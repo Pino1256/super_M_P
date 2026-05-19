@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
     "activeFile": "home_2.tmx",
+=======
+    "activeFile": "map_1.tmx",
+>>>>>>> e93b54e4eb97afac10ba69ae59cbe91da73e3df0
     "expandedProjectPaths": [
     ],
     "fileStates": {
@@ -12,18 +16,25 @@
             }
         },
         "map_1.tmx": {
-            "scale": 1.5,
+            "scale": 4,
             "selectedLayer": 6,
             "viewCenter": {
-                "x": 1079.6666666666665,
-                "y": 330
+                "x": 1199.625,
+                "y": 196.5
             }
         },
         "oggertti_home1.tsx": {
+<<<<<<< HEAD
             "scaleInDock": 1
+=======
+            "scaleInDock": 1.5,
+            "scaleInEditor": 1
+>>>>>>> e93b54e4eb97afac10ba69ae59cbe91da73e3df0
         },
         "terreno.tsx": {
-            "dynamicWrapping": false
+            "dynamicWrapping": false,
+            "scaleInDock": 1.5,
+            "scaleInEditor": 1
         }
     },
     "last.imagePath": "C:/Users/rupil/super_M_P/assets/font",
@@ -33,12 +44,26 @@
     "map.tileWidth": 16,
     "map.width": 50,
     "openFiles": [
+<<<<<<< HEAD
         "home_2.tmx"
+=======
+        "map_1.tmx",
+        "home_2.tmx",
+        "terreno.tsx",
+        "oggertti_home1.tsx"
+>>>>>>> e93b54e4eb97afac10ba69ae59cbe91da73e3df0
     ],
     "project": "game_M_P.tiled-project",
     "property.type": "bool",
     "recentFiles": [
+<<<<<<< HEAD
         "home_2.tmx"
+=======
+        "oggertti_home1.tsx",
+        "terreno.tsx",
+        "home_2.tmx",
+        "map_1.tmx"
+>>>>>>> e93b54e4eb97afac10ba69ae59cbe91da73e3df0
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
