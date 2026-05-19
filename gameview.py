@@ -1,5 +1,6 @@
 import arcade
 from sprite_animato import SpriteAnimato
+import time
 
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 600
@@ -51,6 +52,40 @@ class Player(SpriteAnimato):
         
         super().update_animation(delta_time)
 
+class Crop:
+    ICONS = {0: "./assets/font/1.png", 1: "./assets/font/2.png", 2: "./assets/font/3.png", 3: "./assets/font/4.png"}
+    growth_times = [5, 5, 5] #[10, 20, 30]
+
+    def __init__(self, tile_x, tile_y):
+        self.tile_x = tile_x
+        self.tile_y = tile_y
+        self.stage = 0
+        self.planted_time = time.time()
+        self.textures = {
+            0: arcade.load_texture("./assets/font/1.png"),
+            1: arcade.load_texture("./assets/font/2.png"),
+            2: arcade.load_texture("./assets/font/3.png"),
+            3: arcade.load_texture("./assets/font/4.png"),
+        }
+    
+    def update(self):
+        if self.stage < 3:
+            elapsed = time.time() - self.planted_time
+            if elapsed > self.growth_times[self.stage]:
+                self.stage += 1 #avanza di 1 la crescita
+                self.planted_time = time.time()
+    
+    def is_ready(self):
+        return self.stage == 3
+    
+    # def harvest(self):
+    #     if self.is_alerady():
+    #         return {
+    #             "type": "grano",
+    #             "quantity" : 3
+    #         }
+    #     return None
+
 class GameView(arcade.View):
     def __init__(self):
         super().__init__()
@@ -78,6 +113,7 @@ class GameView(arcade.View):
         self.mappa_corrente = "esterno"
         # self.casa_mappa = True
         # self.fuori_mappa = False
+        self.crops = {}
 
         self.layer_options = {
             "Livello tile 1":{
@@ -108,6 +144,8 @@ class GameView(arcade.View):
         collisioni.extend(self.scene["casa"])
         collisioni.extend(self.scene["oggetti"])
         collisioni.extend(self.scene["aqua"])
+
+        self.farmable_layer = self.tile_map.sprite_lists["farmabile"]
 
         self.physics_engine = arcade.PhysicsEngineSimple(
             self.personaggio,
@@ -144,12 +182,27 @@ class GameView(arcade.View):
 
         self.personaggio.center_x = 350
         self.personaggio.center_y = 50
+    
+    def is_farmable (self, pixel_x, pixel_y): #per vedere se un tile e farmabile
+        for tile in self.farmable_layer:
+            if tile.collides_with_point((pixel_x, pixel_y)):
+                return True
+        return False
 
     def on_draw(self):
         self.clear()
 
         self.camera.use()
         self.scene.draw()
+        for (tx, ty), crop in self.crops.items():
+            px = tx * 16 * TILE_SCALING
+            py = ty * 16 * TILE_SCALING
+            # arcade.draw_text(Crop.ICONS[crop.stage], px, py, arcade.color.WHITE, 20)
+            texture = crop.textures[crop.stage]
+            arcade.draw_texture_rect(
+                texture,
+                arcade.LBWH(px, py, 16 * TILE_SCALING, 16 * TILE_SCALING)
+            )
 
         self.camera_ui.use()
 
@@ -176,8 +229,8 @@ class GameView(arcade.View):
             else:
                 self.mappa_corrente = "esterno"
                 self.setup()
-                self.personaggio.center_x = 1189
-                self.personaggio.center_y = 1620
+                self.personaggio.center_x = 1524
+                self.personaggio.center_y = 1705
 
         if self.up_pressed: cy += self.speed
         if self.down_pressed: cy -= self.speed
@@ -186,6 +239,9 @@ class GameView(arcade.View):
     
         self.personaggio.change_x = cx
         self.personaggio.change_y = cy
+    
+        for crop in self.crops.values():
+            crop.update()
 
         self.physics_engine.update()
 
@@ -204,8 +260,15 @@ class GameView(arcade.View):
             self.left_pressed = True
         elif tasto in (arcade.key.RIGHT, arcade.key.D):
             self.right_pressed = True  
-        
-    
+        elif tasto == arcade.key.E:
+            tile_x = int(self.personaggio.center_x / (16 * TILE_SCALING))
+            tile_y = int(self.personaggio.center_y / (16 * TILE_SCALING))
+            crop = self.crops.get((tile_x, tile_y))
+            if crop and crop.is_ready():
+                del self.crops[(tile_x, tile_y)]
+                print("raccolto")
+            
+
     def on_key_release(self, tasto, modificatori):
 
         if tasto in (arcade.key.UP, arcade.key.W):
@@ -216,3 +279,15 @@ class GameView(arcade.View):
             self.left_pressed = False
         elif tasto in (arcade.key.RIGHT, arcade.key.D):
             self.right_pressed = False   
+        
+    def on_mouse_press(self, x, y, button, modifiers):
+
+        world_x = x + self.camera.position[0] - SCREEN_WIDTH / 2
+        world_y = y + self.camera.position[1] - SCREEN_HEIGHT / 2
+
+        if self.is_farmable(world_x, world_y):
+            tile_x = int(world_x / (16 * TILE_SCALING))
+            tile_y = int(world_y / (16 * TILE_SCALING))
+            if (tile_x, tile_y) not in self.crops:
+                self.crops[(tile_x, tile_y)] = Crop(tile_x, tile_y)
+                print("Piantato! 🌱")

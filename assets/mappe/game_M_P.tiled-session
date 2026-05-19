@@ -1,5 +1,5 @@
 {
-    "activeFile": "",
+    "activeFile": "home_2.tmx",
     "expandedProjectPaths": [
     ],
     "fileStates": {
@@ -7,8 +7,8 @@
             "scale": 1.5,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 192.33333333333331,
-                "y": 555.3333333333333
+                "x": 400,
+                "y": 399.66666666666663
             }
         },
         "map_1.tmx": {
@@ -18,6 +18,9 @@
                 "x": 1079.6666666666665,
                 "y": 330
             }
+        },
+        "oggertti_home1.tsx": {
+            "scaleInDock": 1
         },
         "terreno.tsx": {
             "dynamicWrapping": false
@@ -30,9 +33,12 @@
     "map.tileWidth": 16,
     "map.width": 50,
     "openFiles": [
+        "home_2.tmx"
     ],
     "project": "game_M_P.tiled-project",
+    "property.type": "bool",
     "recentFiles": [
+        "home_2.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
