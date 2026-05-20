@@ -157,6 +157,11 @@ class GameView(arcade.View):
         )
 
         self.cambio_mappa = False
+    
+    def venditore_frutta(self):
+        pass
+        self.venditore = arcade.Sprite("./assets/font/venditore.png")
+
 
     def carica_casa(self):
 
