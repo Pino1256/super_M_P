@@ -106,6 +106,10 @@ class GameView(arcade.View):
         self.camera = arcade.camera.Camera2D()
         self.camera_ui = arcade.camera.Camera2D()
 
+        # grano
+        self.harvested_grano: int = 0
+        self.logic_raccolto = False
+
         # tile map
         self.tile_map = None
         self.scene = None
@@ -134,8 +138,8 @@ class GameView(arcade.View):
         self.scene = arcade.Scene.from_tilemap(self.tile_map)
 
         self.personaggio = Player()
-        self.personaggio.center_x = 1100
-        self.personaggio.center_y = 600
+        self.personaggio.center_x = 1795
+        self.personaggio.center_y = 826
 
 
         self.scene.add_sprite("personaggio", self.personaggio)
@@ -208,6 +212,7 @@ class GameView(arcade.View):
 
         arcade.draw_text(f"X: {self.personaggio.center_x:.0f}", 10, SCREEN_HEIGHT - 50, arcade.color.BLACK, 20)
         arcade.draw_text(f"Y: {self.personaggio.center_y:.0f}", 10, SCREEN_HEIGHT - 70, arcade.color.BLACK, 20)
+        arcade.draw_text(f"grano raccolto: {self.harvested_grano:.0f}", 10, SCREEN_HEIGHT - 90, arcade.color.BLACK, 20)
 
     
     def on_update(self, delta_time):
@@ -266,7 +271,12 @@ class GameView(arcade.View):
             crop = self.crops.get((tile_x, tile_y))
             if crop and crop.is_ready():
                 del self.crops[(tile_x, tile_y)]
+                self.harvested_grano += 1
                 print("raccolto")
+        elif tasto == arcade.key.L:
+            from menu import MenuView
+            menu = MenuView(self)
+            self.window.show_view(menu)
             
 
     def on_key_release(self, tasto, modificatori):
