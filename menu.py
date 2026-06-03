@@ -32,6 +32,6 @@ class MenuView (arcade.View):
     def on_key_press(self, key, modifiers):
         if key == arcade.key.T:
             self.game_view.harvested_grano -= 1
-        if key == arcade.key.L:
+        if key == arcade.key.R:
             self.window.show_view(self.game_view)
     

@@ -77,14 +77,6 @@ class Crop:
     
     def is_ready(self):
         return self.stage == 3
-    
-    # def harvest(self):
-    #     if self.is_alerady():
-    #         return {
-    #             "type": "grano",
-    #             "quantity" : 3
-    #         }
-    #     return None
 
 class GameView(arcade.View):
     def __init__(self):
@@ -110,13 +102,15 @@ class GameView(arcade.View):
         self.harvested_grano: int = 0
         self.logic_raccolto = False
 
+        # venditore
+        self.venditore = None
+        self.lista_vendiore = arcade.SpriteList()
+
         # tile map
         self.tile_map = None
         self.scene = None
         self.cambio_mappa = False
         self.mappa_corrente = "esterno"
-        # self.casa_mappa = True
-        # self.fuori_mappa = False
         self.crops = {}
 
         self.layer_options = {
@@ -126,6 +120,7 @@ class GameView(arcade.View):
         }
 
         self.setup()
+        self.venditore_frutta()
     
     def setup(self):
 
@@ -159,8 +154,11 @@ class GameView(arcade.View):
         self.cambio_mappa = False
     
     def venditore_frutta(self):
-        pass
         self.venditore = arcade.Sprite("./assets/font/venditore.png")
+        self.venditore.scale = 1
+        self.venditore.center_x = 1434
+        self.venditore.center_y = 1536
+        self.lista_vendiore.append(self.venditore)
 
 
     def carica_casa(self):
@@ -200,18 +198,20 @@ class GameView(arcade.View):
 
     def on_draw(self):
         self.clear()
+        
 
         self.camera.use()
         self.scene.draw()
         for (tx, ty), crop in self.crops.items():
             px = tx * 16 * TILE_SCALING
             py = ty * 16 * TILE_SCALING
-            # arcade.draw_text(Crop.ICONS[crop.stage], px, py, arcade.color.WHITE, 20)
             texture = crop.textures[crop.stage]
             arcade.draw_texture_rect(
                 texture,
                 arcade.LBWH(px, py, 16 * TILE_SCALING, 16 * TILE_SCALING)
             )
+        
+        self.lista_vendiore.draw()
 
         self.camera_ui.use()
 
@@ -241,6 +241,12 @@ class GameView(arcade.View):
                 self.setup()
                 self.personaggio.center_x = 1524
                 self.personaggio.center_y = 1705
+        
+        porte_caverna = self.scene.get_sprite_list("porta_caverna") if "porta_caverna" in self.scene._name_mapping else arcade.SpriteList()
+        porte_toccate_cav = arcade.check_for_collision_with_list(
+            self.personaggio,
+            porte_caverna
+        )
 
         if self.up_pressed: cy += self.speed
         if self.down_pressed: cy -= self.speed
@@ -282,6 +288,12 @@ class GameView(arcade.View):
             from menu import MenuView
             menu = MenuView(self)
             self.window.show_view(menu)
+        elif tasto == arcade.key.R:
+            distanza = arcade.get_distance_between_sprites(self.personaggio, self.venditore)
+            if distanza <= 100:
+                from menu import MenuView
+                menu = MenuView(self)
+                self.window.show_view(menu)
             
 
     def on_key_release(self, tasto, modificatori):
@@ -305,4 +317,3 @@ class GameView(arcade.View):
             tile_y = int(world_y / (16 * TILE_SCALING))
             if (tile_x, tile_y) not in self.crops:
                 self.crops[(tile_x, tile_y)] = Crop(tile_x, tile_y)
-                print("Piantato! 🌱")
